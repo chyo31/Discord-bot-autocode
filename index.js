@@ -68,7 +68,7 @@ bot.on('message', (message) => {
       if (!message.member.roles.cache.some((role) => role.name === 'admin')) {
         return message.channel.send('');
       }
-      if (!args[1]) return message.channel.send('Silakan berikan pesan yang akan dikirim.');
+      if (!args[1]) return message.channel.send('Give me message.');
       const msg = args.slice(1).join(' ');
 
       message.delete({ timeout: 2000 }) // delete 2 second after you send type +msg (msg) , and this will always mentions the role @member
