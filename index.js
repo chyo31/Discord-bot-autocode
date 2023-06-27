@@ -64,28 +64,28 @@ bot.on('message', (message) => {
   }
 
   switch (args[0]) {
-    case 'msg':
+case 'msg':
       if (!message.member.roles.cache.some((role) => role.name === 'admin')) {
         return message.channel.send('');
       }
-      if (!args[1]) return message.channel.send('Give me message.');
-      const msg = args.slice(1).join(' ');
+      if (!args[1]) return message.channel.send('give me message lol.');
+      const msg = args.slice(2).join(' ');
 
-      message.delete({ timeout: 2000 }) // delete 2 second after you send type +msg (msg) , and this will always mentions the role @member
+      message.delete({ timeout: 2000 })
         .then(() => {
-          const role = message.guild.roles.cache.get('821880830816157728'); //your role id
-          const mention = role ? role.toString() : '@member';
-
+          const channel = bot.channels.cache.get(args[1]);
+          if (!channel) return message.channel.send('your (Channel ID) not found.');
 
           const embed = new MessageEmbed()
-            .setDescription(`${mention} ${msg}`)
+            .setDescription(`${msg}`)
             .setColor('RANDOM');
 
-          message.channel.send(embed);
+          channel.send(embed);
         })
         .catch((error) => {
           console.error('Error deleting command message:', error);
-        });
+        });  
+  
       break;
     case 'help':
       const inviteEmbed = new MessageEmbed()
