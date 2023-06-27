@@ -4,8 +4,10 @@
 # my prefix : +
 
 # List of commands? :
-+msg (your message) will always mention the @member role tag and 3 will delete your original message, make sure you have the admin role.
-+status (play/listen/watch/stream) make sure you have an admin role before using this command
+# +msg (channel id) (message) 
+and 3 second delete your original message, make sure you have the admin role.
+# +status (play/listen/watch/stream) 
+make sure you have an admin role before using this command
 +help (do rewrite on help menu)
 
 # Features:
