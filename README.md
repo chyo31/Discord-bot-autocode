@@ -1,5 +1,5 @@
 # made with replit
- ![made with](https://blog.replit.com//images/logo.png)
+ ![made with](https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSAnBZPDeFQwgJjkFkfxq2pkiAZ4TXMF0XjYg&usqp=CAU)
 # discord bot rinznity discord.js V12
 my personal monecraft bot open source bot.
 # Version list on package
