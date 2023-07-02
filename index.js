@@ -1,8 +1,8 @@
-require('dotenv').config();
-const token = process.env.TOKEN; // your .env file token bot discord
-const PREFIXES = ['+', '/']; // you can custom prefix
+const { Client, MessageEmbed, Intents } = require('discord.js');
+const PREFIXES = ['+', '-'];
+const token = process.env.TOKEN;
+const axios = require('axios');
 const express = require('express');
-const cron = require('node-cron');
 const app = express();
 
 const port = 3000; //this bots always alive 
@@ -14,35 +14,32 @@ app.get('/', (req, res) => {
 app.listen(port, () => {
   console.log(`Example app listening at Port: ${port}`);
 });
-
-const { Client, MessageEmbed } = require('discord.js');
-const bot = new Client();
-let statusIndex = 0;
-const statuses = [
-  { type: 'PLAYING', activity: 'online' },
-  { type: 'LISTENING', activity: 'online' },
-  { type: 'WATCHING', activity: 'online' },
-  { type: 'STREAMING', activity: 'online' }
-];
-
-function updateBotStatus() {
-  const { type, activity } = statuses[statusIndex];
-  bot.user.setActivity(activity, { type: type });
-
-  statusIndex++;
-  if (statusIndex >= statuses.length) {
-    statusIndex = 0;
-  }
-}
+const serverIP = 'hypixel.net';
+const serverPort = 25565;
+const bot = new Client({
+  intents: [Intents.FLAGS.GUILDS, Intents.FLAGS.GUILD_MESSAGES],
+});
 
 bot.on('ready', () => {
-  console.log('Bot has come online.');
+  console.log('I'm ready.');
 
-  // Run the updateBotStatus function every minute
-  cron.schedule('*/1 * * * *', () => {
-    updateBotStatus();
-  });
-});
+  function updateActivity() {
+    axios.get(`https://eu.mc-api.net/v3/server/ping/${serverIP}:${serverPort}`)
+      .then((response) => {
+        const playerCount = response.data.players.online;
+        const maxPlayers = response.data.players.max;
+
+        bot.user.setActivity(`Online Players: ${playerCount}/${maxPlayers}`, { type: 'STREAMING' });
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+  }
+
+  updateActivity();
+
+  setInterval(updateActivity, 60000);
+}); //refresh every 1 minute
 
 bot.on('message', (message) => {
   let args;
@@ -56,85 +53,63 @@ bot.on('message', (message) => {
     }
   }
 
-  if (!args) return; 
+  if (!args) return;
 
-  // cannot perform orders in private messages
   if (message.channel.type === 'dm') {
-    return message.channel.send('cannot perform orders in private messages');
+    return message.channel.send('Cannot be in private messages');
   }
 
-  switch (args[0]) {
-case 'msg':
+switch (args[0]) {
+    case 'msg':
       if (!message.member.roles.cache.some((role) => role.name === 'admin')) {
         return message.channel.send('');
       }
-      if (!args[1]) return message.channel.send('give me message lol.');
+      if (!args[1]) return message.channel.send('give me message.');
       const msg = args.slice(2).join(' ');
 
-      message.delete({ timeout: 2000 })
+      message.delete({ timeout: 2000 }) //auto delete your original message 2 second
         .then(() => {
           const channel = bot.channels.cache.get(args[1]);
-          if (!channel) return message.channel.send('your (Channel ID) not found.');
+          if (!channel) return message.channel.send('channel (channel) not found.');
 
-          const embed = new MessageEmbed()
-            .setDescription(`${msg}`)
-            .setColor('RANDOM');
-
-          channel.send(embed);
+          channel.send(msg);
         })
         .catch((error) => {
           console.error('Error deleting command message:', error);
-        });  
-  
-      break;
+        });
+     break;
     case 'help':
       const inviteEmbed = new MessageEmbed()
-        .setTitle('**title Bot**')
-        .setDescription('your description help menu')
-        .addField('Your filed','scond field')
+        .setTitle('**Bot Title**')
+        .setDescription('description')
+        .addField('one field, 'two field')
         .setColor('RANDOM');
 
       message.channel.send(inviteEmbed);
       break;
-    case 'status':
+    case 'kick':
       if (!message.member.roles.cache.some((role) => role.name === 'admin')) {
-        return message.channel.send('');
+        return message.channel.send('Make sure you have an admin role .');
       }
-      if (!args[1] || !args[2]) {
-        return message.channel.send('usage +status [play/listen/watch/stream] [activity name]');
-      }
+      if (!args[0]) return message.channel.send('give me user to kick.');
 
-      const command = args[1];
-      const activityName = args.slice(2).join(' ');
+      const user = message.mentions.users.first();
+      if (!user) return message.channel.send('user not valid.');
 
-      switch (command) {
-        case 'play':
-          bot.user.setActivity(activityName, { type: 'PLAYING' });
-          message.channel.send(`Status succes change to play ${activityName}`);
-          break;
-        case 'listen':
-          bot.user.setActivity(activityName, { type: 'LISTENING' });
-          message.channel.send(`Status succes change to listen ${activityName}`);
-          break;
-        case 'stream':
-          bot.user.setActivity(activityName, { type: 'STREAMING' });
-          message.channel.send(`Status succes to streaming ${activityName}`);
-          break;
-        case 'watch':
-          bot.user.setActivity(activityName, { type: 'WATCHING' });
-          message.channel.send(`Status succes with watching ${activityName}`);
-          break;
-        default:
-          message.channel.send(`usage +status [play/listen/watch] [activity name]`);
-      }
+      const member = message.guild.member(user);
+      if (!member) return message.channel.send('cannot find user.');
+
+      member
+        .kick()
+        .then(() => {
+          message.channel.send(`user ${user.tag} succes kicked from the server.`);
+        })
+        .catch((error) => {
+          console.error('Error kicking user:', error);
+          message.channel.send('An error has occurred');
+        });
       break;
   }
 });
 
-bot.login(token); // Use the token variable
-
-function getRandomColor() {
-  const colors = ['#F7931E', '#E4405F', '#4F82DD', '#43B581', '#FAA61A', '#7289DA', '#FF4D4D', '#9D4DBB', '#F47FFF', '#19E6E6', '#77DD77', '#C0C0C0', '#FDD835', '#FF5A5A', '#C485FF'];
-  const randomIndex = Math.floor(Math.random() * colors.length);
-  return colors[randomIndex];
-}
+bot.login(token);
