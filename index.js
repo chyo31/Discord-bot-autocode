@@ -82,7 +82,7 @@ switch (args[0]) {
       const inviteEmbed = new MessageEmbed()
         .setTitle('**Bot Title**')
         .setDescription('description')
-        .addField('one field, 'two field')
+        .addField('one field', 'two field')
         .setColor('RANDOM');
 
       message.channel.send(inviteEmbed);
