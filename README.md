@@ -1,17 +1,30 @@
-# replit discord bot rinznity 
-# Here my personal open source bot.
-
-# my prefix : +
-
-# List of commands? :
-# +msg (channel id) (message) 
-and 3 second delete your original message, make sure you have the admin role.
-# +status (play/listen/watch/stream) 
-make sure you have an admin role before using this command
-+help (do rewrite on help menu)
-
-# Features:
-automatic update of activity status: PLAYING, LISTENING, WATCHING, STREAMING (a small note: if you want to customize the status with the +status command, it will automatically be replaced with the automatic feature status, so you can delete one of them, So if your discord bot is public then you must delete the command +status section.
- And make the bot 24/7 using uptimerobot.com or you can also add auto refresh JavaScript html code to your personal website that supports the main JavaScript.
+# made with replit
+ ![made with](https://blog.replit.com//images/logo.png)
+# discord bot rinznity discord.js V12
+my personal monecraft bot open source bot.
+# Version list on package
+```
+axios: 1.4.0
+discord.js: 12.0.0
+dotenv: 16.3.1
+express: 4.18.2
+```
+# my prefix : + and -
+List of commands
+```
+ +msg 
+Example: +msg (channel ID) (message) this can tag/mention roles and users, 3 second delete your original message, and make sure have admin role.
+ +kick 
+make sure you have an admin role before using this command, for example : +kick @user (reason)
+ +help
+menu help example +hel 
+```
+# Status server minecraft on activity status
+View active server status every 1 minute
+example : ![example](https://raw.githubusercontent.com/chyo31/Minecraft-server-status-on-status-discord-bot/main/Screenshot_20230625-125403_1-picsay.jpg)
+And make the bot 24/7 using uptimerobot.com or you can also add auto refresh JavaScript html code to your personal website that supports the main JavaScript.
 # Here link : https://github.com/chyo31/replit-discord-bot-rinznity/blob/main/index.html
-# Have fun.
+```
+thank you
+```
+```
