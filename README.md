@@ -17,7 +17,7 @@ Example: +msg (channel ID) (message) this can tag/mention roles and users, 3 sec
  +kick 
 make sure you have an admin role before using this command, for example : +kick @user (reason)
  +help
-menu help example +hel 
+menu help example +help
 ```
 # Status server minecraft on activity status
 View active server status every 1 minute
