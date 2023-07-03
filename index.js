@@ -29,7 +29,7 @@ bot.on('ready', () => {
         const playerCount = response.data.players.online;
         const maxPlayers = response.data.players.max;
 
-        bot.user.setActivity(`Online Players: ${playerCount}/${maxPlayers}`, { type: 'STREAMING' });
+        bot.user.setActivity(`Online Players: ${playerCount}/${maxPlayers}`, { type: 'PLAYING' });
       })
       .catch((error) => {
         console.error(error);
