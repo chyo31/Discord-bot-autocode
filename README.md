@@ -22,8 +22,6 @@ menu help example +help
 # Status server minecraft on activity status
 View active server status every 1 minute
 example : ![example](https://raw.githubusercontent.com/chyo31/Minecraft-server-status-on-status-discord-bot/main/Screenshot_20230625-125403_1-picsay.jpg)
-And make the bot 24/7 using uptimerobot.com or you can also add auto refresh JavaScript html code to your personal website that supports the main JavaScript.
-# Here link : https://github.com/chyo31/replit-discord-bot-rinznity/blob/main/index.html
 ```
 thank you
 ```
